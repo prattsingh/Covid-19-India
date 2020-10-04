@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1601811560932.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2938115057",
+    "id" : "B87DD6C8",
+    "lastKnownWriteTime" : 1601810764,
+    "last_content_update" : 1601810764,
+    "path" : "~/projects/Covid_India/cov-report.Rmd",
+    "project_path" : "cov-report.Rmd",
+    "properties" : {
+        "cursorPosition" : "110,25",
+        "ignored_words" : "rda,Covid,Arunanchal,Pradesh,png,br,outliers,Pratyush\n",
+        "last_setup_crc32" : "3E8B3207bb338d19",
+        "scrollLine" : "92",
+        "tempName" : "Untitled1",
+        "working_dir" : "default"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

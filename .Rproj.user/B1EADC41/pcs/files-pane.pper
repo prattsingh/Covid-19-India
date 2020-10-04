@@ -1,0 +1,9 @@
+{
+    "path" : "~/projects/Covid_India",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}
