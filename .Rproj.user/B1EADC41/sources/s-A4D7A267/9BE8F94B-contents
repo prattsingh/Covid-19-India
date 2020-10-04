@@ -1,5 +1,6 @@
 load("rda/final.plot.rda")
 
+
 combined.final <- combined.final %>% mutate(density_norm = (max(Density) - Density)/max(Density))
 combined.rural <- combined.rural %>% mutate(rural_norm = (max(rural_prop , na.rm = TRUE) - rural_prop)/max(rural_prop , na.rm = TRUE))
 

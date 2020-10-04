@@ -1,0 +1,151 @@
+---
+title: "COVID -19 INDIA"
+author: "Pratyush Singh"
+date: "02/10/2020"
+output: 
+  prettydoc::html_pretty:
+    theme : leonids
+    highlight : github
+css: style.css
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## COVID-19 INDIA
+
+This is a detailed data analysis of Covid-19 Data in india ,
+Aiming to extract insights on variables effecting State-Wise performace in combating the pandemic 
+and reaching factual conclusions supported by data .
+
+
+The Data Used was obtained from the following links :<br />
+Covid-19 India Dataset - <https://www.kaggle.com/sudalairajkumar/covid19-in-india?select=covid_19_india.csv><br />
+India shp file - <https://codeload.github.com/arka1985/MAP_INDIA_R/zip/master><br />
+Indian Rural Population - <https://hetv.org/india/india-rural-urban-distribution-of-population-2011.xls><br />
+Indian Population Dataset <https://storage.googleapis.com/kaggle-data-sets/557629%2F1489204%2Fbundle%2Far><br />
+
+
+# State-Wise Confirmed Cases per Million
+```{r cases , echo=FALSE, out.width='70%' , out.height= '90%'}
+load("rda/plot_conf.rda")
+DT::datatable(plot_conf , class = "cell-border stripe" , rownames = F , filter = "top" ,
+              editable = TRUE)
+
+```
+
+# State-Wise COVID-19 Tests Performed Per Million
+```{r tests  ,echo=FALSE , out.width='70%' , out.height= '90%'}
+load("rda/samples.final.rda")
+DT::datatable(samples.final , class = "cell-border stripe" , rownames = F , filter = "top" ,
+              editable = TRUE)
+
+```
+
+
+
+
+```{r fig1, echo=FALSE, fig.cap="INDIAN COV-19 MAP"}
+library(ggplot2)
+library(cowplot)
+library(DT)
+load("rda/final.plot.rda")
+load("rda/final.plot2.rda")
+
+fig_cases_per_mil <- ggplot() +
+  geom_polygon(data = final.plot,
+               aes(x = long, y = lat, group = group, fill = confirmed_per_million), 
+               color = "black", size = 0.25) + 
+  coord_map()+
+  scale_fill_gradient(name="COV-19", limits = c(1200,18000) ,low = 'white', high = 'red')+
+  labs(title="Confirmed Cases per Million")+
+  xlab('Longitude')+
+  ylab('Latitude') +
+  theme_cowplot(line_size = 0.4,rel_large = 15/14 , rel_small = 11/14 , rel_tiny = 10/14)
+fig_tests_per_mil <- ggplot() +
+  geom_polygon(data = final.plot2,
+               aes(x = long, y = lat, group = group, fill = samples_per_million), 
+               color = "black", size = 0.25) + 
+  coord_map()+
+  scale_fill_gradient(name="COV-19_Test" ,low = 'red', high = 'white')+
+  labs(title="Tests per Million")+
+  xlab('Longitude')+
+  ylab('Latitude') +
+  theme_cowplot(line_size = 0.4,rel_large = 15/14 , rel_small = 11/14 , rel_tiny = 10/14)
+plot_grid(fig_cases_per_mil , fig_tests_per_mil)
+
+```
+```{r echo=FALSE}
+fig_cases_per_mil
+
+```
+```{r echo=FALSE}
+fig_tests_per_mil
+
+```
+
+<span style="color: orange;">**The plots reveal that most states in India seem to be performing well against COVID-19 but tests performed by these states reveal that due to lack of testing , there is a lack data to map the spread of disease in such states **</span>
+<span style="color: orange;">**Whereas states such as**</span> <span style="color: red;">**Delhi , Arunanchal Pradesh and Goa **</span> 
+<span style="color: orange;">**seem to be worst hit by the pandemic only to reveal that these states have performed the most tests per million and thus have a greater grip on the spread of the pandemic inside the states**</span>
+
+# Population Density of Each State
+
+
+```{r ,, echo=FALSE , out.width='70%' , out.height= '90%'}
+load("rda/pop.density.rda")
+DT::datatable(pop.density , class = "cell-border stripe" , rownames = F , filter = "top" ,
+              editable = TRUE)
+
+
+```
+
+<br />
+
+```{r fig2, echo=FALSE, fig.cap="POPULATION DENSITY", out.width = '60%' , out.height='90%'}
+knitr::include_graphics("figs/combined.png")
+```
+
+
+<span style="color: orange;">**Population Density**</span> 
+<span style="color: red;">**does not seem to have a major pattern in the performance of states against the pandemic**</span> 
+<span style="color: orange;">**as seen states having comparatively lower density are mostly at the bottom left corner of the plot with some towards the top right , Similarly Denser states are also spread allover the graph **</span>
+
+# Rural Density Of Each State
+
+
+```{r , echo=FALSE, out.width = '60%' , out.height='90%'}
+load("rda/rural_urban.rda")
+DT::datatable(rural_urban , class = "cell-border stripe" , rownames = F , filter = "top" ,
+              editable = TRUE)
+
+
+```
+<br />
+
+```{r fig3, echo=FALSE, fig.cap="RURAL DENSITY", out.width = '60%' ,out.height='90%'}
+knitr::include_graphics("figs/combined_rural.plot.png")
+```
+
+
+<span style="color: orange;">**The plot reveals a clear pattern showing the significant effect of rural population on each state's performance against the pandemic , with states with higher rural proportion residing mostly towards the bottom left whereas urban states are towards the top right**<br /></span>
+<span style="color: green;">**Though the plot also suggests that there are outliers such as Arunanchal Pradesh , Andaman & Nicobar Islands and Andhra Pradesh which are performing relatively better despite higher rural population  **<br /></span>
+<span style="color: red;">**Similarly States such as Chandigarh , Kerala and Maharashtra are relatively in worse position despite being mostly urban**<br /></span>
+
+<br />
+```{r fig4, echo=FALSE, out.width = '90%'}
+knitr::include_graphics("figs/testing.plot.png")
+```
+<br />
+
+
+## CONCLUSION
+
+Most states in India have improved their overall testing per million<br />
+
+<span style="color: red;">**Yet**</span> 
+some states have performed significantly better than others while some have done worse ,<br /> 
+
+This goes to show that although their are multiple varibales which effect the performance of a region against a pandemic their is a significant scope for
+<span style="color: green;"> **good management and bad management** </span> by respective state governance and authorities.
