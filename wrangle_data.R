@@ -80,6 +80,7 @@ final.plot2<-merge.shp.coef[order(merge.shp.coef$order), ]
 
 save(samples.final , file = "rda/samples.final.rda")
 save(final.plot2 , file = "rda/final.plot2.rda")
+save(samples.pop , file = "rda/samples.pop.rda")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
 #plot#3
 
@@ -130,3 +131,35 @@ combined.rural <- rural_urban %>% select(id ,rural_prop)   %>% mutate(id = str_r
                                          id ,"Arunachal Pradesh" , "Arunanchal Pradesh")) %>% right_join(
                                            combined , by = "id")
 save(combined.rural , file = "rda/combined.rural.rda")
+save(pop.density , file = "rda/pop.density.rda")
+save(rural_urban , file = "rda/rural_urban.rda")
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+samples2 <- dat2 %>% mutate(month = month(ymd(Date))) %>% select(month , State, TotalSamples)
+testing <- samples2 %>% filter( month %in% c(6,9)) %>% group_by(month , State) %>%
+  summarise(Tests = sum(TotalSamples))
+testing <- testing %>% mutate(Month = case_when(
+  month == 9 ~ "September" ,
+  month == 6 ~ "June"
+)) %>% select(Month , State , Tests)
+testing <- testing %>% mutate(Month = as.factor(Month)) %>% select(Month , State , Tests)
+names(testing)[3] = 'id'
+testing.pop <- testing %>% mutate( id = str_replace(id, "Telangana" ,"Telengana")) %>%left_join(pop , by = "id")
+testing.final <- testing.pop %>% mutate(tests_per_million = (Tests/Population)*10^6)
+testing.final <- testing.final %>% mutate(state = case_when(
+  id == "Arunachal Pradesh" ~ "A.P",
+  id == "Andaman and Nicobar Islands" ~ "A.N Islands",
+  id == "Jammu and Kashmir" ~ "J.K",
+  id == "Andhra Pradesh" ~ "Andhra P",
+  id == "Tamil Nadu" ~ "T.N",
+  id == "Dadra and Nagar Haveli and Daman and Diu" ~ "Dadra/Daman",
+  id == "Himachal Pradesh" ~ "H.P",
+  id == "	Madhya Pradesh"  ~ "M.P" ,
+  id == "Uttar Pradesh" ~ "U.P" ,
+  TRUE ~ as.character(id)
+)) %>% select(Month , state , Tests , tests_per_million)
+testing.final <- testing.final %>% arrange(tests_per_million)
+  
+  
+save(testing , file =  "rda/testing.rda")
+save(testing.final , file = "rda/testing.final.rda")

@@ -6,6 +6,7 @@ output:
   prettydoc::html_pretty:
     theme : leonids
     highlight : github
+runtime : shiny
 css: style.css
 
 ---
